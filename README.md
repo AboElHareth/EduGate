@@ -1,77 +1,155 @@
-# 🎓 EduGate LMS
+# EduGate
 
-> A lightweight Learning Management System built using **.NET technologies** as part of the *Digital Egypt Pioneers Initiative (DEPI)* – Full Stack Track.
+EduGate is a full-stack educational platform designed to help teachers manage their online learning experience without the need to build a custom platform for every course or subject.
 
----
-
-## 🚀 Overview
-
-EduGate LMS is a simple web platform that allows teachers to create courses, manage students, and conduct online exams, while students can join courses, access content, and track their progress.
+The system allows teachers to create and manage courses, upload lectures, create assignments and exams, and generate student accounts based on their subscription package. Students can log into the platform, access course content, submit assignments, and take exams through a clean and user-friendly interface.
 
 ---
 
-## ✨ Features
+## Project Idea
 
-**👨‍🏫 Teacher**
+Many high school teachers struggle with the high cost and complexity of creating their own educational platforms. EduGate solves this problem by providing a centralized platform where any teacher can subscribe and manage their students and content through a dedicated dashboard.
 
-* Create & manage courses
-* Generate Class Codes
-* Create MCQ exams
-* Track student results
-
-**👨‍🎓 Student**
-
-* Join courses 
-* Access materials
-* Take exams
-* View grades
+Instead of creating a separate website for every teacher, EduGate offers a scalable shared platform that supports multiple teachers and thousands of students.
 
 ---
 
-## 🛠️ Tech Stack
+## Features
 
-* **Backend:** ASP.NET Core, C#, Entity Framework
-* **Database:** SQL Server
-* **Frontend:** HTML, CSS, JavaScript
-* **Architecture:** MVC + REST API
+### Teacher Features
+
+* Teacher registration and authentication
+* Course creation and management
+* Upload lectures and educational materials
+* Create assignments and exams
+* Generate and manage student accounts
+* Monitor enrolled students
+* Package-based student limits
+
+### Student Features
+
+* Secure login system
+* Access lectures and course materials
+* Submit assignments
+* Take online exams
+* View grades and progress
 
 ---
 
-## ⚙️ Setup
+## Technologies Used
 
-```bash id="k3s9d2"
-git clone https://github.com/Yousef-afifi/EduGate.git
-cd EduGate
+### Backend
+
+* ASP.NET Core MVC
+* C#
+* Entity Framework Core
+* SQL Server
+
+### Frontend
+
+* HTML5
+* CSS3
+* JavaScript
+* Bootstrap
+
+### Database
+
+* Microsoft SQL Server
+
+### Tools & Platforms
+
+* Visual Studio
+* Git & GitHub
+* Docker
+* Azure SQL Database
+
+---
+
+## Architecture
+
+The project follows a Layered MVC Architecture to ensure clean code organization and separation of concerns.
+
+### Layers
+
+* Presentation Layer (MVC Controllers & Views)
+* Business Logic Layer (Services)
+* Data Access Layer (Repositories & EF Core)
+* Database Layer (SQL Server)
+
+---
+
+## Project Structure
+
+```text
+EduGate/
+│
+├── Front/                           # Frontend prototype
+├── Back/                            # ASP.NET Core MVC application
+├── DataBase Diagrams/               # ERD and database scripts
+│
+└── README.md
 ```
 
-* Configure database in `appsettings.json`
-* Run migrations:
+---
 
-```bash id="m1z8xq"
-update-database
-```
+## Database Design
 
-* Run the project via Visual Studio ▶️
+The system uses a relational database designed with normalization and clear entity relationships.
+
+Main entities include:
+
+* Users
+* Courses
+* Lectures
+* Exams
+* Questions
+* Assignments
+* Enrollments
+* Packages
+
+Database diagrams are available inside the `DataBase Diagrams` folder.
 
 ---
 
-## 🔐 Access
+## Team Workflow
 
-* Role-based system (Teacher / Student)
-* Students join via **Class Code**
+* GitHub is used for version control and collaboration.
+* The team follows a modular development approach.
+* Database migrations are managed using Entity Framework Core.
+* Shared cloud database hosted on Azure SQL Database.
 
 ---
 
-## 🌱 Future Work
+## Future Improvements
 
-* File uploads (videos, PDFs)
-* Notifications
+* Payment gateway integration
+* AI-generated quizzes
+* Mobile application
+* Real-time notifications
 * Analytics dashboard
+* Live streaming support
 
 ---
 
-## 📌 Note
+## Educational Purpose
 
-This project focuses on core LMS functionality with a clean and simple design, making it suitable as a graduation project.
+This project is developed as a Graduation Project and Full Stack .NET Training Project to demonstrate practical knowledge in:
+
+* Full Stack Development
+* MVC Architecture
+* Database Design
+* Software Engineering Principles
+* Authentication & Authorization
+* Cloud-based Development
 
 ---
+
+## Authors
+
+EduGate Development Team
+
+---
+
+## License
+
+This project is developed for educational purposes.
