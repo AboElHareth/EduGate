@@ -85,7 +85,7 @@ EduGate/
 │
 ├── Front/                           # Frontend prototype
 ├── Back/                            # ASP.NET Core MVC application
-├── DataBase Diagrams/               # ERD and database scripts
+├── Diagrams/                        # ERD and database scripts
 │
 └── README.md
 ```
@@ -107,7 +107,7 @@ Main entities include:
 * Enrollments
 * Packages
 
-Database diagrams are available inside the `DataBase Diagrams` folder.
+Database diagrams are available inside the `Diagrams` folder.
 
 ---
 
