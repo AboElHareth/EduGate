@@ -10,7 +10,6 @@ const STORAGE_KEYS = {
   user: 'edu_user',
   token: 'edu_token',
   db: 'edu_demo_db',
-  cart: 'edu_book_cart',
 };
 
 const ICONS = {
@@ -33,7 +32,6 @@ const ICONS = {
   quiz: '&#10067;',
   lock: '&#128274;',
   check: '&#10003;',
-  star: '&#11088;',
   fire: '&#128293;',
   note: '&#128204;',
   party: '&#127881;',
@@ -51,7 +49,6 @@ function createDefaultDemoDb() {
       emoji: ICONS.courses,
       lessonsCount: 12,
       duration: '6 weeks',
-      rating: '4.9',
       instructorName: 'Ms. Sarah Ahmed',
       instructorId: 101,
       level: 'Beginner',
@@ -67,7 +64,6 @@ function createDefaultDemoDb() {
       emoji: '&#127794;',
       lessonsCount: 18,
       duration: '8 weeks',
-      rating: '4.7',
       instructorName: 'Dr. Mona Adel',
       instructorId: 102,
       level: 'Intermediate',
@@ -83,7 +79,6 @@ function createDefaultDemoDb() {
       emoji: '&#127912;',
       lessonsCount: 10,
       duration: '4 weeks',
-      rating: '4.8',
       instructorName: 'Mr. Karim Samir',
       instructorId: 103,
       level: 'Beginner',
@@ -99,7 +94,6 @@ function createDefaultDemoDb() {
       emoji: '&#128202;',
       lessonsCount: 14,
       duration: '5 weeks',
-      rating: '4.6',
       instructorName: 'Dr. Lina Hassan',
       instructorId: 104,
       level: 'Intermediate',
@@ -284,42 +278,6 @@ function redirectToDashboard() {
   window.location.href = 'dashboard.html';
 }
 
-function getBookCart() {
-  try {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEYS.cart));
-    return Array.isArray(saved) ? saved : [];
-  } catch {
-    return [];
-  }
-}
-
-function saveBookCart(items) {
-  localStorage.setItem(STORAGE_KEYS.cart, JSON.stringify(items));
-}
-
-function addBookToCart(book) {
-  const items = getBookCart();
-  const existing = items.find((item) => item.id === book.id);
-  if (existing) {
-    existing.quantity = (existing.quantity || 1) + 1;
-    existing.lastUpdated = new Date().toISOString();
-  } else {
-    items.push({
-      ...book,
-      quantity: 1,
-      orderedAt: new Date().toISOString(),
-      status: book.status || 'Preparing',
-    });
-  }
-  saveBookCart(items);
-  return items;
-}
-
-function removeBookFromCart(bookId) {
-  const items = getBookCart().filter((item) => item.id !== bookId);
-  saveBookCart(items);
-  return items;
-}
 
 /* ---------- API layer with demo fallback ---------- */
 async function apiRequest(path, method = 'GET', body = null) {
@@ -376,16 +334,12 @@ function buildTeacherStats(db, user) {
   const teacherCourses = db.courses.filter((course) => course.instructorId === user.id || user.role === 'teacher');
   const teacherStudents = getTeacherStudentAccounts(db, user);
   const totalLessons = teacherCourses.reduce((sum, course) => sum + (db.lessonsByCourse[course.id] || []).length, 0);
-  const ratedCourses = teacherCourses.filter((course) => Number(course.rating));
-  const avgRating = ratedCourses.length
-    ? (ratedCourses.reduce((sum, course) => sum + Number(course.rating), 0) / ratedCourses.length).toFixed(1)
-    : '0.0';
 
   return {
     totalStudents: teacherStudents.length,
     activeCourses: teacherCourses.length,
     totalLessons,
-    avgRating,
+    totalExams: db.exams.length,
   };
 }
 
@@ -445,7 +399,6 @@ function handleDemoRequest(path, method, body) {
       emoji: ICONS.courses,
       lessonsCount: 0,
       duration: body.duration || 'Self paced',
-      rating: 'New',
       instructorName: user.name,
       instructorId: user.id,
       level: body.level || 'All levels',
@@ -906,7 +859,6 @@ function renderCourseCard(course) {
         <div class="course-card__meta">
           <span>${ICONS.article} ${course.lessonsCount || 0} lessons</span>
           <span>${ICONS.video} ${course.duration || '-'}</span>
-          <span>${ICONS.star} ${course.rating || '4.5'}</span>
         </div>
         <div class="course-card__progress-bar">
           <div class="course-card__progress-fill" style="width:${progress}%"></div>
@@ -1005,9 +957,7 @@ populateSidebarUser();
     },
   ];
 
-  if (!isTeacher) {
-    document.body.classList.add('student-shell');
-  }
+  document.body.classList.add('student-shell');
 
   if (isTeacher && currentView === 'analytics') {
     currentView = 'overview';
@@ -1018,7 +968,7 @@ populateSidebarUser();
     { icon: '&#127968;', label: 'Dashboard', page: 'dashboard.html', view: 'overview' },
     { icon: '&#128218;', label: 'Courses', page: 'courses.html' },
     { icon: '&#128221;', label: 'Exams', page: 'exams.html' },
-    { icon: '&#128101;', label: 'Students', page: '#', view: 'students', badge: 'Seats' },
+    { icon: '&#128101;', label: 'Students', page: '#', view: 'students' },
     { icon: '&#11014;', label: 'Upgrade', page: '#', view: 'upgrade' },
     { icon: '&#9881;', label: 'Settings', page: '#', view: 'settings' },
   ];
@@ -1027,8 +977,6 @@ populateSidebarUser();
         { icon: '&#127968;', label: 'Dashboard', page: 'dashboard.html', view: 'overview' },
         { icon: '&#128218;', label: 'My Courses', page: 'courses.html' },
         { icon: '&#128221;', label: 'My Exams', page: 'exams.html', badge: '2' },
-        { icon: '&#128214;', label: 'Book Store', page: '#', view: 'progress' },
-        { icon: '&#128722;', label: 'My Cart', page: 'cart.html' },
         { icon: '&#128197;', label: 'Schedule', page: '#', view: 'schedule' },
         { icon: '&#9881;', label: 'Settings', page: '#', view: 'settings' },
       ];
@@ -1036,7 +984,6 @@ populateSidebarUser();
   const navItems = isTeacher ? teacherNav : studentNav;
 
   document.getElementById('sidebar-peek-toggle')?.addEventListener('click', () => {
-    if (isTeacher) return;
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('sidebar-overlay');
     const open = sidebar.classList.toggle('open');
@@ -1044,7 +991,6 @@ populateSidebarUser();
   });
 
   document.getElementById('sidebar-overlay')?.addEventListener('click', () => {
-    if (isTeacher) return;
     document.getElementById('sidebar').classList.remove('open');
     document.getElementById('sidebar-overlay').style.display = 'none';
   });
@@ -1151,14 +1097,6 @@ populateSidebarUser();
     return updated;
   }
 
-  function addStoreBook(book) {
-    addBookToCart(book);
-    showToast('Book added to cart successfully.', 'success');
-    setTimeout(() => {
-      window.location.href = 'cart.html';
-    }, 350);
-  }
-
   async function renderTeacherOverview() {
     setTitles('Teacher Dashboard', 'Teaching Control Center');
     const [stats, courses] = await Promise.all([
@@ -1197,10 +1135,10 @@ populateSidebarUser();
           <div class="stat-card__change up">Across all course modules</div>
         </div>
         <div class="stat-card">
-          <div class="stat-card__icon">&#11088;</div>
-          <div class="stat-card__num">${stats.avgRating}</div>
-          <div class="stat-card__label">Course Rating</div>
-          <div class="stat-card__change up">Student feedback snapshot</div>
+          <div class="stat-card__icon">&#128221;</div>
+          <div class="stat-card__num">${stats.totalExams}</div>
+          <div class="stat-card__label">Exams</div>
+          <div class="stat-card__change up">Published assessments</div>
         </div>
       </div>
 
@@ -1876,64 +1814,6 @@ populateSidebarUser();
     `;
   }
 
-  async function renderStudentProgress() {
-    setTitles('Book Store', 'Study Materials & Bundles');
-    const books = [
-      {
-        id: 'book-1',
-        title: 'Final Revision Bundle - Grade 3',
-        subtitle: 'Comprehensive prep pack for final review',
-        price: 280,
-        grade: 'Senior 3',
-        accentClass: 'student-book-card__media--1',
-        emoji: '&#128218;',
-        status: 'Preparing'
-      },
-      {
-        id: 'book-2',
-        title: 'Term 2 Review Package - Grade 2',
-        subtitle: 'Targeted revision with solved examples',
-        price: 120,
-        grade: 'Senior 2',
-        accentClass: 'student-book-card__media--2',
-        emoji: '&#128209;',
-        status: 'Ready for Pickup'
-      },
-      {
-        id: 'book-3',
-        title: 'Term 2 Review Package - Grade 1',
-        subtitle: 'Practice sheets and guided summaries',
-        price: 120,
-        grade: 'Senior 1',
-        accentClass: 'student-book-card__media--3',
-        emoji: '&#128210;',
-        status: 'Delivered'
-      }
-    ];
-    document.getElementById('dashboard-content').innerHTML = `
-      <div class="section-header">
-        <div><div class="section-title">Book Store</div><div style="font-size:13px;color:var(--gray-400);margin-top:6px">Browse available study bundles and order the material you need for this term.</div></div>
-      </div>
-      <div class="student-book-grid">${books.map((book) => `
-        <div class="student-book-card">
-          <div class="student-book-card__media ${book.accentClass}">
-            <div class="student-book-card__label">${book.grade}</div>
-            <div class="student-book-card__art">${book.emoji}</div>
-            <div class="student-book-card__shine"></div>
-          </div>
-          <div class="student-book-card__body">
-            <h3>${book.title}</h3>
-            <p class="student-book-card__subtitle">${book.subtitle}</p>
-            <div class="student-book-card__price">${book.price} EGP</div>
-            <div class="student-book-card__actions">
-              <button class="student-book-card__action" onclick='event.stopPropagation(); addStoreBook(${JSON.stringify(book)})'>Add to Cart</button>
-            </div>
-          </div>
-        </div>
-      `).join('')}</div>
-    `;
-  }
-
   async function renderStudentSchedule() {
     setTitles('Schedule', 'Upcoming Learning Schedule');
     const exams = await api.get('/student/exams/upcoming');
@@ -2203,8 +2083,6 @@ populateSidebarUser();
       if (currentView === 'settings') return renderTeacherSettings();
       return renderTeacherOverview();
     }
-
-    if (currentView === 'progress') return renderStudentProgress();
     if (currentView === 'schedule') return renderStudentSchedule();
     if (currentView === 'settings') return renderStudentSettings();
     return renderStudentOverview();

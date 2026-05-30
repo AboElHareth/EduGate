@@ -1,14 +1,19 @@
 /* Page styles: pages/teacher/dashboard.html */
 /* ---------- Google Fonts ---------- */
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
 /* ---------- CSS Variables ---------- */
 :root {
-  --navy:       #0b1221;
+  --primary-color:   #0b1221;
+  --secondary-color: #f59e0b;
+  --font-family:     'Poppins', system-ui, sans-serif;
+  --border-radius:   12px;
+  --spacing:         16px;
+  --navy:       var(--primary-color);
   --navy-mid:   #162035;
   --navy-light: #1e2d4a;
-  --amber:      #f59e0b;
+  --amber:      var(--secondary-color);
   --amber-dark: #d97706;
   --amber-glow: rgba(245,158,11,0.15);
   --cream:      #fdf8f0;
@@ -23,13 +28,13 @@
   --green:      #22c55e;
 
   --sidebar-w:  260px;
-  --radius:     12px;
+  --radius:     var(--border-radius);
   --radius-sm:  8px;
   --shadow:     0 4px 24px rgba(11,18,33,0.08);
   --shadow-lg:  0 12px 48px rgba(11,18,33,0.14);
 
-  --font-head:  'Playfair Display', Georgia, serif;
-  --font-body:  'DM Sans', system-ui, sans-serif;
+  --font-head:  var(--font-family);
+  --font-body:  var(--font-family);
 
   --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
 }
@@ -823,116 +828,6 @@ body.student-shell .nav-item.active .nav-icon {
   margin-bottom: 16px;
 }
 
-.student-book-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 28px;
-}
-
-.student-book-card {
-  background: var(--white);
-  border-radius: 24px;
-  padding: 20px;
-  border: 1px solid rgba(11,18,33,0.06);
-  box-shadow: 0 14px 40px rgba(11,18,33,0.08);
-  transition: transform var(--transition), box-shadow var(--transition);
-}
-
-.student-book-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 18px 46px rgba(11,18,33,0.14);
-}
-
-.student-book-card__media {
-  position: relative;
-  min-height: 240px;
-  border-radius: 20px;
-  overflow: hidden;
-  padding: 22px;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-.student-book-card__label {
-  position: relative;
-  z-index: 1;
-  display: inline-flex;
-  align-items: center;
-  padding: 8px 14px;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.75);
-  color: var(--navy);
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  backdrop-filter: blur(8px);
-}
-
-.student-book-card__art {
-  position: absolute;
-  inset-inline-start: 28px;
-  inset-block-end: 24px;
-  font-size: 110px;
-  line-height: 1;
-  filter: drop-shadow(0 14px 28px rgba(11,18,33,0.2));
-  z-index: 1;
-}
-
-.student-book-card__shine {
-  position: absolute;
-  width: 240px;
-  height: 240px;
-  border-radius: 50%;
-  inset-inline-end: -40px;
-  inset-block-end: -70px;
-  background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.12) 45%, transparent 70%);
-}
-
-.student-book-card__body h3 {
-  font-family: var(--font-head);
-  font-size: 24px;
-  line-height: 1.35;
-  color: var(--navy);
-  margin-bottom: 12px;
-}
-
-.student-book-card__subtitle {
-  font-size: 14px;
-  line-height: 1.8;
-  color: var(--gray-600);
-  margin-bottom: 16px;
-}
-
-.student-book-card__price {
-  font-family: var(--font-head);
-  font-size: 32px;
-  color: #16a34a;
-  margin-bottom: 18px;
-}
-
-.student-book-card__actions {
-  margin-top: auto;
-}
-
-.student-book-card__action {
-  width: 100%;
-  min-height: 52px;
-  border-radius: 16px;
-  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
-  color: var(--white);
-  font-size: 15px;
-  font-weight: 700;
-  transition: transform var(--transition), box-shadow var(--transition), opacity var(--transition);
-  box-shadow: 0 12px 24px rgba(11,18,33,0.18);
-}
-
-.student-book-card:hover .student-book-card__action {
-  transform: translateY(-1px);
-  box-shadow: 0 16px 28px rgba(11,18,33,0.22);
-}
 
 .info-row {
   display: flex;
@@ -1612,9 +1507,6 @@ body.student-shell .nav-item.active .nav-icon {
 
 .cards-grid { grid-template-columns: 1fr; }
 
-.student-book-grid { grid-template-columns: 1fr; }
-
-.student-book-card__body h3 { font-size: 22px; }
 
 .student-settings-hero {
     padding: 24px;
@@ -1632,11 +1524,6 @@ body.student-shell .nav-item.active .nav-icon {
 
 .exams-grid { grid-template-columns: 1fr; }
 
-.student-book-card { padding: 16px; border-radius: 20px; }
-
-.student-book-card__media { min-height: 210px; padding: 18px; }
-
-.student-book-card__art { font-size: 88px; inset-inline-start: 20px; }
 
 .student-settings-card,
   .student-settings-hero { padding: 18px; border-radius: 20px; }

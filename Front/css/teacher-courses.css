@@ -1,14 +1,19 @@
 /* Page styles: pages/teacher/courses.html */
 /* ---------- Google Fonts ---------- */
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
 /* ---------- CSS Variables ---------- */
 :root {
-  --navy:       #0b1221;
+  --primary-color:   #0b1221;
+  --secondary-color: #f59e0b;
+  --font-family:     'Poppins', system-ui, sans-serif;
+  --border-radius:   12px;
+  --spacing:         16px;
+  --navy:       var(--primary-color);
   --navy-mid:   #162035;
   --navy-light: #1e2d4a;
-  --amber:      #f59e0b;
+  --amber:      var(--secondary-color);
   --amber-dark: #d97706;
   --amber-glow: rgba(245,158,11,0.15);
   --cream:      #fdf8f0;
@@ -23,13 +28,13 @@
   --green:      #22c55e;
 
   --sidebar-w:  260px;
-  --radius:     12px;
+  --radius:     var(--border-radius);
   --radius-sm:  8px;
   --shadow:     0 4px 24px rgba(11,18,33,0.08);
   --shadow-lg:  0 12px 48px rgba(11,18,33,0.14);
 
-  --font-head:  'Playfair Display', Georgia, serif;
-  --font-body:  'DM Sans', system-ui, sans-serif;
+  --font-head:  var(--font-family);
+  --font-body:  var(--font-family);
 
   --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
 }
